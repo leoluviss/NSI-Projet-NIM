@@ -9,7 +9,7 @@ Squelette de la partie 1
 def separateur(caractere):
     for loop in range(80):
         print(caractere, end="")
-    print("\n")
+    print("")
     return
     
 def saut_de_ligne(n):
@@ -18,12 +18,15 @@ def saut_de_ligne(n):
     return
 
 def affichage(n, caractere):
+    saut_de_ligne(1)    
+    separateur('-')
+    print(f"{n} objets restants : ")
     for loop in range(n):
         print(caractere, end=" ")
+    print("")
+    separateur('-')
+    saut_de_ligne(1)
     return
-
-saut_de_ligne(1)    
-separateur('-')
 
 def choix_joueur():
     saut_de_ligne(1)
