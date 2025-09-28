@@ -7,6 +7,10 @@ Squelette de la partie 1
 
 #%% Simulation d'un duel des batonnets avec deux joueurs humains
 def separateur(caractere):
+    for loop in range(80):
+        print(caractere, end="")
+    print("\n")
+    return
     """
     Affiche une chaîne de 80 caractères de séparation
     Utilise print
@@ -25,6 +29,9 @@ def separateur(caractere):
     
     
 def saut_de_ligne(n):
+    for loop in range(n):
+        print("")
+    return
     """
     Affiche n sauts de lignes
     saut_de_ligne(2) saute 2 lignes par ex
@@ -42,6 +49,9 @@ def saut_de_ligne(n):
     #à compléter
 
 def affichage(n, caractere):
+    for loop in range(n):
+        print(caractere, end=" ")
+    return
     """
     Affiche n objets sous forme de caractere
     sur une même ligne (option end = " " de print)
@@ -60,8 +70,9 @@ def affichage(n, caractere):
     ----------------    
     None    
     """
-    saut_de_ligne(1)    
-    separateur('-')
+
+saut_de_ligne(1)    
+separateur('-')
     #à compléter
 
 """
@@ -99,8 +110,12 @@ def choix_joueur():
     """
     saut_de_ligne(1)
     separateur('-')
-    n = int(input("Nombre d'objets retirés ? "))
-    #à compléter 
+    n=0
+    while not (1 <= n <= 3):
+        n = int(input("Nombre d'objets retirés ? "))
+        if n < 1 or n > 3:
+            print("Choisir un nombre d'objets entre 1 et 3.")
+    #à compléter
     return n
 
 """
@@ -117,6 +132,11 @@ Nombre d'objets retirés ? 3
 """
 
 def prochain_joueur(joueur):
+    assert joueur == 1 or joueur == 2
+    if joueur == 1:
+        return 2
+    else:
+        return 1
     """
     Renvoie le numéro du prochain joueur
     à partir du numéro du joueur courant
@@ -131,7 +151,6 @@ def prochain_joueur(joueur):
     ----------------    
     int 
     """
-    assert joueur == 1 or joueur == 2
     #à compléter
     
 #tests unitaires
