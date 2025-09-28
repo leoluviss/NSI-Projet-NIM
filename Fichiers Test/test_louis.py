@@ -40,4 +40,3 @@ def prochain_joueur(joueur):
 assert prochain_joueur(1) == 2
 assert prochain_joueur(2) == 1
 
-print(prochain_joueur(3))
