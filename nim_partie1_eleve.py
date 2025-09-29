@@ -52,25 +52,6 @@ assert prochain_joueur(2) == 1
 #%%
 
 def partie_fort_boyard1():
-    """
-    Simule une partie du jeu des allumettes
-    de Fort Boyard entre deux joueurs humains
-    20 allumettes au départ 
-    A chaque tour, un joueur prend entre 1 et 3 allumettes
-    Celui qui ne peut plus jouer a perdu    
-    Affiche l'évolution des tas, les actions réalisées par chaque joueur
-    et le gagnant !
-    
-    Paramètre:
-    ---------
-    joueur : int
-        le numéro du joueur courant
-        
-    Valeur renvoyée :
-    ----------------    
-    None
-    """
-    
     nb_objet = 20
     affichage(nb_objet, '*')
     #à compléter
