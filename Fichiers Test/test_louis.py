@@ -40,3 +40,16 @@ def prochain_joueur(joueur):
 assert prochain_joueur(1) == 2
 assert prochain_joueur(2) == 1
 
+def partie_fort_boyard1():
+    nb_objet = 20
+    joueur = 1
+    affichage(nb_objet, '*')
+    while nb_objet > 0:
+        n = choix_joueur()
+        print(f"Le joueur numéro {joueur} enlève {n} objets")
+        nb_objet -= n
+        affichage(nb_objet, '*')
+        joueur = prochain_joueur(joueur)
+    print("Joueur", prochain_joueur(joueur), "gagnant !")
+    return
+partie_fort_boyard1()
