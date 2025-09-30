@@ -70,21 +70,11 @@ def partie_fort_boyard1():
 import random
 
 def choix_ordinateur(nb_objet):
-    """
-    Renvoie le choix de l'ordinateur 
-    (1,2 ou 3 objets enlevés)
-    s'il reste nb_objet objets
-    stratégie gagnante si possible
-    choix aléatoire sinon
-
-    Args:
-        nb_objet : int 
-                nombre d'objets restants
-
-    Returns:
-        int: nombre d'objets retirés
-    """
-    #à compléter
+    # Stratégie gagnante : laisser un multiple de 4 à l'adversaire
+    if nb_objet % 4 == 0:
+        return 1
+    else:
+        return nb_objet % 4
 
 #Tests unitaires 
 assert choix_ordinateur(18) == 2
@@ -93,128 +83,28 @@ assert choix_ordinateur(3) == 3
 assert choix_ordinateur(9) ==1
 
 def partie_fort_boyard2():
-    """
-    Simule une partie du jeu des allumettes
-    de Fort Boyard entre deux joueurs humains
-    20 allumettes au départ 
-    A chaque tour, un joueur prend entre 1 et 3 allumettes
-    Celui qui ne peut plus jouer a perdu    
-    Affiche l'évolution des tas, les actions réalisées par chaque joueur
-    et le gagnant !
-    
-    Paramètre:
-    ---------
-    joueur : int
-        le numéro du joueur courant
-        
-    Valeur renvoyée :
-    ----------------    
-    int 
-    """
-    
     nb_allumette = 20
     ordinateur = random.randint(1, 2)
+    saut_de_ligne(1)
     print("L'ordinateur est le joueur numéro ", ordinateur)
-    separateur('#')
-    affichage(nb_allumette, '*')    
-    #à  compléter
-
-
-""" 
-Exemple de partie
-
-L'ordinateur est le joueur numéro  2
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-20 objets restants :
-* * * * * * * * * * * * * * * * * * * * 
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
-Nombre d'objets retirés ? 3
-Le joueur numéro  1  enlève  3 allumettes
-
---------------------------------------------------------------------------------
-17 objets restants :
-* * * * * * * * * * * * * * * * * 
---------------------------------------------------------------------------------
-
-Le joueur numéro  2  enlève  1 allumettes
-
---------------------------------------------------------------------------------
-16 objets restants :
-* * * * * * * * * * * * * * * * 
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
-Nombre d'objets retirés ? 2
-Le joueur numéro  1  enlève  2 allumettes
-
---------------------------------------------------------------------------------
-14 objets restants :
-* * * * * * * * * * * * * * 
---------------------------------------------------------------------------------
-
-Le joueur numéro  2  enlève  2 allumettes
-
---------------------------------------------------------------------------------
-12 objets restants :
-* * * * * * * * * * * * 
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
-Nombre d'objets retirés ? 3
-Le joueur numéro  1  enlève  3 allumettes
-
---------------------------------------------------------------------------------
-9 objets restants :
-* * * * * * * * * 
---------------------------------------------------------------------------------
-
-Le joueur numéro  2  enlève  1 allumettes
-
---------------------------------------------------------------------------------
-8 objets restants :
-* * * * * * * * 
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
-Nombre d'objets retirés ? 1
-Le joueur numéro  1  enlève  1 allumettes
-
---------------------------------------------------------------------------------
-7 objets restants :
-* * * * * * * 
---------------------------------------------------------------------------------
-
-Le joueur numéro  2  enlève  3 allumettes
-
---------------------------------------------------------------------------------
-4 objets restants :
-* * * * 
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
-Nombre d'objets retirés ? 3
-Le joueur numéro  1  enlève  3 allumettes
-
---------------------------------------------------------------------------------
-1 objets restants :
-* 
---------------------------------------------------------------------------------
-
-Le joueur numéro  2  enlève  1 allumettes
-
---------------------------------------------------------------------------------
-0 objets restants :
-
---------------------------------------------------------------------------------
-
-Joueur  2  gagnant !
-"""
+    separateur('-')
+    affichage(nb_allumette, '*') 
+    while nb_allumette > 0:
+        if prochain_joueur(ordinateur) == 1:
+            n = choix_joueur()
+            print(f"Le joueur numéro {prochain_joueur(ordinateur)} enlève {n} objets")
+            nb_allumette -= n
+            affichage(nb_allumette, '*')
+            saut_de_ligne(1)
+            separateur('-')
+        else:
+            n = choix_ordinateur(nb_allumette)
+            print(f"L'ordinateur enlève {n} objets")
+            nb_allumette -= n
+            affichage(nb_allumette, '*')
+        ordinateur = prochain_joueur(ordinateur)
+    if ordinateur == 1:
+        print("L'ordinateur gagne !")
+    else:
+        print("Joueur", prochain_joueur(ordinateur), "gagnant !")
+    return

@@ -54,7 +54,7 @@ def partie_fort_boyard1():
         joueur = prochain_joueur(joueur)
     print("Joueur", prochain_joueur(joueur), "gagnant !")
     return
-partie_fort_boyard1()
+
 def choix_ordinateur(nb_objet):
     # Stratégie gagnante : laisser un multiple de 4 à l'adversaire
     if nb_objet % 4 == 0:
@@ -63,19 +63,30 @@ def choix_ordinateur(nb_objet):
         return nb_objet % 4
 
 def partie_vs_ordinateur():
-    nb_objet = 20
-    joueur = 1  # 1 = joueur humain, 2 = ordinateur
-    affichage(nb_objet, '*')
-    while nb_objet > 0:
-        if joueur == 1:
+    nb_allumette = 20
+    ordinateur = random.randint(1, 2)
+    saut_de_ligne(1)
+    print("L'ordinateur est le joueur numéro ", ordinateur)
+    separateur('-')
+    affichage(nb_allumette, '*') 
+    while nb_allumette > 0:
+        if prochain_joueur(ordinateur) == 1:
             n = choix_joueur()
+            print(f"Le joueur numéro {prochain_joueur(ordinateur)} enlève {n} objets")
+            nb_allumette -= n
+            affichage(nb_allumette, '*')
+            saut_de_ligne(1)
+            separateur('-')
         else:
-            n = choix_ordinateur(nb_objet)
+            n = choix_ordinateur(nb_allumette)
             print(f"L'ordinateur enlève {n} objets")
-        nb_objet -= n
-        affichage(nb_objet, '*')
-        joueur = prochain_joueur(joueur)
-    print("Joueur", prochain_joueur(joueur), "gagnant !")
+            nb_allumette -= n
+            affichage(nb_allumette, '*')
+        ordinateur = prochain_joueur(ordinateur)
+    if ordinateur == 1:
+        print("L'ordinateur gagne !")
+    else:
+        print("Joueur", prochain_joueur(ordinateur), "gagnant !")
     return
 
 # Pour jouer contre l'ordinateur, décommentez la ligne suivante :
