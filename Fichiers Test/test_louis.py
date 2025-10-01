@@ -1,34 +1,82 @@
-def binaire_vers_decimale(tab):
-    puissance = 1
-    decimale = 0
-    for bit in reversed(tab):
-        decimale += bit * puissance
-        puissance *= 2
-    return decimale
+def inversion_tableau(tab):
+    """
+    Renvoie un tableau  avec les éléments
+    de tab dans l'ordre inverse (tab[::-1])
 
-#tests unitaires
-assert binaire_vers_decimale([0]) == 0
-assert binaire_vers_decimale([1]) == 1
-assert binaire_vers_decimale([1, 0]) == 2
-assert binaire_vers_decimale([1, 1]) == 3
-assert binaire_vers_decimale([1, 0, 0]) == 4
-assert binaire_vers_decimale([1, 0, 1]) == 5
+    Parameters:
+    -----------
+        tab : list
+            tableau d'éléments de même type
 
-def decimale_vers_binaire(n):
-    assert n >= 0
-    binaire = []
-    if n == 0:
-        return [0]
-    while n > 0:
-        binaire.append(n % 2)
-        n //= 2
-    binaire.reverse()
-    return binaire
+    Returns:
+    --------
+        tableau d'éléments du même type que tab[0]
+    """
+    inv_tab = []
+    for i in range(len(tab)-1, -1, -1):
+        inv_tab.append(tab[i])
+    return inv_tab
 
-#tests unitaires
-assert decimale_vers_binaire(0) == [0]
-assert decimale_vers_binaire(1) == [1]
-assert decimale_vers_binaire(2) == [1, 0]
-assert decimale_vers_binaire(3) == [1, 1]
-assert decimale_vers_binaire(4) == [1, 0, 0]
-assert decimale_vers_binaire(5) == [1, 0, 1]
+
+#Tests unitaires
+assert inversion_tableau([]) == []
+assert inversion_tableau([1,1]) == [1,1]
+assert inversion_tableau([1,5]) == [5,1]
+assert inversion_tableau([1, 5, 4]) == [4, 5, 1]
+assert inversion_tableau([1, -5, 4]) == [4, -5, 1]
+
+
+def copie_tab(tab):
+    """
+    Renvoie une copie superficielle du
+    tableau tab  
+
+    Parameters:
+    -----------
+        tab : list
+            un tableau d'éléments de type simple
+            (int, float, bool)
+
+    Returns:
+    --------
+        tableau d'éléments du même type que tab[0]
+    """
+    copie = []
+    for element in tab:
+        copie.append(element)
+    return copie
+
+
+
+#Tests unitaires
+assert copie_tab([]) == []
+assert copie_tab([1,1]) == [1,1]
+assert copie_tab([1, -5, 4]) == [1, -5, 4]
+
+
+
+def tous_zeros(tab):
+    """
+    Détermine si un tableau de bits (0 ou 1) 
+    contient uniquement des 0
+
+    Parameters:
+    -----------
+        tab : list
+            un tableau de bits (0 ou 1)
+
+    Returns:
+    --------
+        boolean
+    """
+    for bit in tab:
+        if bit != 0:
+            return False
+    return len(tab) > 0
+
+
+
+#Tests unitaires
+assert not tous_zeros([])
+assert tous_zeros([0, 0, 0])
+#à compléter avec d'autres tests pertinents
