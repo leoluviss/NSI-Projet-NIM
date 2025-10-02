@@ -103,7 +103,7 @@ def partie_fort_boyard2():
             nb_allumette -= n
             affichage(nb_allumette, '*')
         ordinateur = prochain_joueur(ordinateur)
-    if ordinateur == 1:
+    if ordinateur == 2:
         print("L'ordinateur gagne !")
     else:
         print("Joueur", prochain_joueur(ordinateur), "gagnant !")
