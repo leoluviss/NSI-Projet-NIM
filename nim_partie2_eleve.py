@@ -12,7 +12,7 @@ from nim_partie1_eleve import separateur, saut_de_ligne, affichage, prochain_jou
 def inversion_tableau(tab):
     inv_tab = [0] * len(tab)  # Crée une liste vide avec la même taille
     for t in range(len(tab)):
-        inv_tab[len(tab)-t-1] = tab[t]
+        inv_tab[len(tab)-t-1] = tab[t]  # Place l'élément tab[t] à la position inversée dans inv_tab
     return inv_tab
 
 
@@ -38,13 +38,13 @@ assert copie_tab([1, -5, 4]) == [1, -5, 4]
 
 
 def tous_zeros(tab):
-    tof=True
-    if not tab:
-        tof=False
+    trueorfalse=True
+    if not tab:  # Vérifie si la liste est vide
+        trueorfalse=False
     for t in tab:
         if t!=0:
-            tof=False
-    return tof
+            trueorfalse=False
+    return trueorfalse
 
 #Tests unitaires
 assert not tous_zeros([])          # liste vide == False
@@ -57,13 +57,12 @@ assert not tous_zeros([1, 2, 3])   # que des non-zéros == False
 def binaire_vers_decimale(tab):
     puissance = 0
     decimale = 0
-    reversedtab = inversion_tableau(tab)
+    reversedtab = inversion_tableau(tab)  # On inverse le tableau pour traiter du bit de poids faible au bit de poids fort
     for bit in reversedtab:
-        if bit == 0 or bit == 1:
-            decimale += bit * (2**puissance)
-            puissance += 1
-        else:
-            assert False, "Le tableau doit contenir uniquement des 0 et des 1"
+        if bit not in (0, 1):  # Si on trouve un élément qui n'est pas 0 ou 1 dans le tableau
+            assert False, "Le tableau doit contenir uniquement des 0 et des 1"  # Déclenche une erreur si un élément du tableau n'est pas un bit (0 ou 1)
+        decimale += bit * (2**puissance)
+        puissance += 1
     return decimale
 
 #tests unitaires
@@ -75,16 +74,16 @@ assert binaire_vers_decimale([1, 0, 0]) == 4
 assert binaire_vers_decimale([1, 0, 1]) == 5
 
 def decimale_vers_binaire(n):
-    assert n >= 0
+    assert n >= 0  # Précondition
     binaire = [None] * 32  # on réserve 32 bits
-    postab = 0
-    if n == 0:
+    postab = 0  # Position dans le tableau
+    if n == 0:  # Cas particulier
         return [0]
     while n > 0:
         binaire[postab] = n % 2
         n = n // 2
         postab += 1
-    binaire = binaire[:postab]  # on ne garde que la partie utile
+    binaire = binaire[:postab]  # On ne garde que la partie utile
     return inversion_tableau(binaire)
 
 

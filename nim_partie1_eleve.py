@@ -92,7 +92,7 @@ def choix_joueur():
     saut_de_ligne(1)
     separateur('-')
     n=0
-    while not (1 <= n <= 3):
+    while not (1 <= n <= 3): # Tant que n n'est pas entre 1 et 3 (inclus) le joueur doit resaisir
         n = int(input("Nombre d'objets retirés ? "))
         if n < 1 or n > 3:
             print("Choisir un nombre d'objets entre 1 et 3.")
@@ -159,7 +159,7 @@ def partie_fort_boyard1():
 #%% Simulation d'un duel des batonnets avec un joueur humain jouant contre l'ordinateur
 
 #import du module random
-import random
+from random import *
 
 def choix_ordinateur(nb_objet):
     """
@@ -178,7 +178,13 @@ def choix_ordinateur(nb_objet):
     """
     # Stratégie gagnante : laisser un multiple de 4 à l'adversaire
     if nb_objet % 4 == 0:
-        return 1
+        # Choix aléatoire si la stratégie gagnante n'est pas possible
+        if nb_objet >= 3: # Permet d'éviter d'avoir un choix impossible
+            return randint(1, 3)
+        elif nb_objet == 2:
+            return randint(1, 2)
+        else:
+            return 1
     else:
         return nb_objet % 4
 
@@ -208,26 +214,26 @@ def partie_fort_boyard2():
     int 
     """
     nb_allumette = 20
-    ordinateur = random.randint(1, 2)
+    ordinateur = randint(1, 2)  # Choix aléatoire du joueur qui commence
     saut_de_ligne(1)
     print("L'ordinateur est le joueur numéro ", ordinateur)
     separateur('-')
     affichage(nb_allumette, '*') 
     while nb_allumette > 0:
-        if prochain_joueur(ordinateur) == 1:
+        if prochain_joueur(ordinateur) == 1:  # Tour du joueur humain
             n = choix_joueur()
             print(f"Le joueur numéro {prochain_joueur(ordinateur)} enlève {n} objets")
             nb_allumette -= n
             affichage(nb_allumette, '*')
             saut_de_ligne(1)
             separateur('-')
-        else:
+        else:  # Tour de l'ordinateur
             n = choix_ordinateur(nb_allumette)
             print(f"L'ordinateur enlève {n} objets")
             nb_allumette -= n
             affichage(nb_allumette, '*')
-        ordinateur = prochain_joueur(ordinateur)
-    if ordinateur == 2:
+        ordinateur = prochain_joueur(ordinateur) # Changement de joueur
+    if ordinateur == 2:  # Si l'ordinateur a joué en dernier, c'est qu'il a gagné
         print("L'ordinateur gagne !")
     else:
         print("Joueur", prochain_joueur(ordinateur), "gagnant !")
