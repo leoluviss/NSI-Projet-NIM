@@ -10,10 +10,7 @@ from nim_partie1_eleve import separateur, saut_de_ligne, affichage, prochain_jou
 #%% Manipulation de tableaux
 
 def inversion_tableau(tab):
-    inv_tab = [0] * len(tab)  # Crée une liste vide avec la même taille
-    for t in range(len(tab)):
-        inv_tab[len(tab)-t-1] = tab[t]  # Place l'élément tab[t] à la position inversée dans inv_tab
-    return inv_tab
+    return tab[::-1]
 
 
 #Tests unitaires
