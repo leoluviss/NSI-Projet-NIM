@@ -114,12 +114,14 @@ def xor(bit1, bit2):
     """
     #précondition
     assert (bit1 in [0,1]) and (bit2 in [0,1])
-    #à compléter
+    return (bit1 + bit2) % 2
 
 
 #tests unitaires
-#à compléter
-
+assert  xor(0, 0) == 0
+assert  xor(0, 1) == 1
+assert  xor(1, 0) == 1
+assert  xor(1, 1) == 0
 
 def bourrage_zero_gauche(tab, n):
     """
@@ -139,7 +141,12 @@ def bourrage_zero_gauche(tab, n):
     """
     #précondition
     assert (len(tab) <= n)   and (n >= 0)
-    # à compléter
+    if len(tab) < n:
+        nb_zero = n - len(tab)
+        tab_bourre = [0] * nb_zero + tab
+        return tab_bourre
+    else:
+        return tab
 
 #tests unitaires
 assert  bourrage_zero_gauche([1, 0, 1], 3) == [1, 0, 1]
@@ -173,7 +180,14 @@ def xor_tab(tab1, tab2):
     """
     tab3 = copie_tab(tab1)
     tab4 = copie_tab(tab2)
-    #à compléter
+    if len(tab3) < len(tab4):
+        tab3 = bourrage_zero_gauche(tab3, len(tab4))
+    elif len(tab4) < len(tab3):
+        tab4 = bourrage_zero_gauche(tab4, len(tab3))
+    tabxor = [0] * len(tab3)
+    for i in range(len(tab3)):
+        tabxor[i] = xor(tab3[i], tab4[i])
+    return tabxor
 
 #tests unitaires
 assert  xor_tab([1, 0, 1], [1, 1, 1]) == [0, 1, 0]
