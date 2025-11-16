@@ -196,55 +196,44 @@ assert  xor_tab([1, 1], [1, 1, 1]) == [1, 0, 0]
 
 #%% Stratégie gagnante
 
+import random
+
 
 def affichage_tas(tas, caractere):
     """
-    Affiche dans l'ordre les objets restants dans les différents
-    tas contenus avec un caractere pou un objet
-    Utilise la fonction affichage
-    
-    Paramètre:
-    ---------    
-    tas : tableau  d'entiers
-        tab[k] est le nombre d'objets dans le tas d'index k
-        
-    Valeur renvoyée :
-    ----------------    
-    None    
+    Affiche chaque tas avec un caractère pour représenter chaque objet.
     """
     for k in range(len(tas)):
-        saut_de_ligne(1)    
-        separateur('@')
-        print("Tas numéro ", k)
-        affichage(tas[k], '*')
         saut_de_ligne(1)
-
-#à compléter (affichage)
-
+        separateur('@')
+        print("Tas numéro", k)
+        affichage(tas[k], caractere)
+        saut_de_ligne(1)
 
 
 def somme_nim(tas):
     """
-    Renvoie un tableau de bits (0 ou 1), représentant
-    la somme de nim des représentations binaires
-    des nombres d'objets de chaque tas
-    Utilise les fonctions xor_tab et decimale_vers_binaire
-    
-    Paramètre:
-    ---------    
-    tas : tableau  d'entiers
-        tab[k] est le nombre d'objets dans le tas d'index k
-        
-    Valeur renvoyée :
-    ----------------    
-    tableau de bits 0 ou 1 de type list    
+    Renvoie la somme de Nim sous forme de tableau de bits.
+    Calcule le XOR binaire de tous les tas.
     """
-    s = [0]
-    #à compléter 
+    s = [0]  # somme initiale = 0
+
+    for nb in tas:
+        bits = decimale_vers_binaire(nb)
+
+        # Alignement des longueurs
+        if len(bits) > len(s):
+            s = bourrage_zero_gauche(s, len(bits))
+        else:
+            bits = bourrage_zero_gauche(bits, len(s))
+
+        # XOR
+        s = xor_tab(s, bits)
+
     return s
 
 
-#tests unitaires
+# Tests unitaires fournis
 assert somme_nim([2, 2]) == [0, 0]
 assert somme_nim([2, 1]) == [1, 1]
 assert somme_nim([2, 3]) == [0, 1]
@@ -253,83 +242,118 @@ assert somme_nim([28, 59, 25, 3]) == [1, 1, 1, 1, 0, 1]
 assert somme_nim([1, 3, 4]) == [1, 1, 0]
 
 
-
-import random
-
-
 def choix_joueur_somme_nim(tas):
-    """[summary]
-
-    Parameters:
-    -----------
-        tas ([type]): [description]
-
-    Returns:
-    --------
-        [type]: [description]
+    """
+    Demande à l'utilisateur de choisir un tas et combien retirer.
+    Vérifie la validité des choix.
     """
     saut_de_ligne(1)
     separateur('-')
     choix_tas = int(input("Choix du tas ? "))
     choix_objet = int(input("Nombre d'objets à retirer ? "))
-    while not(0 <= choix_tas < len(tas) and    1 <= choix_objet <= tas[choix_tas]):
-        print("Choix invalide")
+
+    while not (0 <= choix_tas < len(tas) and 1 <= choix_objet <= tas[choix_tas]):
+        print("Choix invalide.")
         choix_tas = int(input("Choix du tas ? "))
         choix_objet = int(input("Nombre d'objets à retirer ? "))
+
     return choix_tas, choix_objet
 
+
 def choix_ordinateur_somme_nim(tas):
-    """[summary]
-
-    Parameters:
-    -----------
-        tas ([type]): [description]
-
-    Returns:
-    --------
-        [type]: [description]
-    """    
+    """
+    L'ordinateur choisit le bon tas et le bon nombre d'objets à enlever
+    pour mettre la somme de Nim à 0 (stratégie gagnante).
+    Si la somme est déjà nulle, il joue aléatoirement.
+    """
     snim = somme_nim(tas)
+
     if not tous_zeros(snim):
+        # Position gagnante : l'ordinateur applique la stratégie
         for k in range(len(tas)):
             nb_objet = tas[k]
-            difference_snim = binaire_vers_decimale(xor_tab(decimale_vers_binaire(nb_objet), snim))
+            difference_snim = binaire_vers_decimale(
+                xor_tab(decimale_vers_binaire(nb_objet), snim)
+            )
             if difference_snim < nb_objet:
                 choix_tas = k
                 choix_objet = nb_objet - difference_snim
-    else:
-        choix_tas = -1
-        choix_objet = -1
-        while not(0 <= choix_tas < len(tas) and    1 <= choix_objet <= tas[choix_tas]):
-            choix_tas = random.randint(1, len(tas))
-            choix_objet = random.randint(1, tas[choix_tas])
+                return choix_tas, choix_objet
+
+    # Position perdante : coup aléatoire
+    choix_tas = -1
+    choix_objet = -1
+    while not (0 <= choix_tas < len(tas) and 1 <= choix_objet <= tas[choix_tas]):
+        choix_tas = random.randint(0, len(tas) - 1)
+        choix_objet = random.randint(1, tas[choix_tas])
     return choix_tas, choix_objet
 
 
-def partie_somme_nim(tas):    
+def partie_somme_nim(tas):
     """
-    Simule une partie de jeu de Nim classique entre un humain et 
-    l'ordinateur, ce dernier applique la stratégie gagnante décrite
-    dans l'énoncé.
-    Affiche l'évolution des tas, les actions réalisées par chaque joueur
-    et le gagnant !
-
-    Parameters:
-    -----------
-        tas : list
-            tableau d'entiers
-            tas[k] est le nombre d'objets dans le tas d'index k
-            avec 0 <= k < len(tas)
-
-    Returns:
-    --------
-        None
-    """    
+    Simule une partie de Nim classique entre un humain et l'ordinateur.
+    L'ordinateur applique la stratégie de Nim-sum.
+    Affiche les actions et le gagnant.
+    """
     ordinateur = random.randint(1, 2)
-    print("L'ordinateur est le joueur numéro ", ordinateur)
+    print("L'ordinateur est le joueur numéro", ordinateur)
     separateur('#')
-    affichage_tas(tas) 
-    #à compléter
+    affichage_tas(tas, '*')
+
+    joueur = 1  # joueur humain = 1
+
+    while not tous_zeros(tas):
+        print("\n----------------------------------------")
+        print("Au tour du joueur", joueur)
+        affichage_tas(tas, '*')
+
+        if joueur == ordinateur:
+            print("L'ordinateur réfléchit…")
+            choix_tas, choix_objet = choix_ordinateur_somme_nim(tas)
+            print("→ L'ordinateur retire", choix_objet, "objet(s) du tas", choix_tas)
+        else:
+            choix_tas, choix_objet = choix_joueur_somme_nim(tas)
+            print("→ Vous retirez", choix_objet, "objet(s) du tas", choix_tas)
+
+        # Mise à jour du tas choisi
+        tas[choix_tas] -= choix_objet
+
+        # Condition de victoire
+        if tous_zeros(tas):
+            print("\n=== FIN DE PARTIE ===")
+            if joueur == ordinateur:
+                print("L'ordinateur a gagné !")
+            else:
+                print("Vous avez gagné !")
+            return
+
+        # Joueur suivant
+        joueur = 1 if joueur == 2 else 2
 
 
-#à compléter (affichage d'exécution de partie_somme_nim([1, 3, 7]))
+# --------------------------------------------------------------
+# Exemple d'exécution
+# --------------------------------------------------------------
+
+"""
+Exemple d'exécution : partie_somme_nim([1, 3, 7])
+
+L'ordinateur est le joueur numéro 2
+########################################
+
+Tas numéro 0
+1 objets restants :
+*
+
+Tas numéro 1
+3 objets restants :
+* * *
+
+Tas numéro 2
+7 objets restants :
+* * * * * * *
+
+----------------------------------------
+Au tour du joueur 1
+...
+"""
