@@ -10,6 +10,19 @@ from nim_partie1_eleve import separateur, saut_de_ligne, affichage, prochain_jou
 #%% Manipulation de tableaux
 
 def inversion_tableau(tab):
+    """
+    Renvoie un tableau  avec les éléments
+    de tab dans l'ordre inverse (tab[::-1])
+
+    Parameters:
+    -----------
+        tab : list
+            tableau d'éléments de même type
+
+    Returns:
+    --------
+        tableau d'éléments du même type que tab[0]
+    """
     return tab[::-1]
 
 
@@ -22,6 +35,20 @@ assert inversion_tableau([1, -5, 4]) == [4, -5, 1]
 
 
 def copie_tab(tab):
+    """
+    Renvoie une copie superficielle du
+    tableau tab
+
+    Parameters:
+    -----------
+        tab : list
+            un tableau d'éléments de type simple
+            (int, float, bool)
+
+    Returns:
+    --------
+        tableau d'éléments du même type que tab[0]
+    """
     copie_tab = [0] * len(tab)  # Crée une liste vide avec la même taille
     for t in range(len(tab)):
         copie_tab[t] = tab[t]
@@ -35,6 +62,19 @@ assert copie_tab([1, -5, 4]) == [1, -5, 4]
 
 
 def tous_zeros(tab):
+    """
+    Détermine si un tableau de bits (0 ou 1)
+    contient uniquement des 0
+
+    Parameters:
+    -----------
+        tab : list
+            un tableau de bits (0 ou 1)
+
+    Returns:
+    --------
+        boolean
+    """
     trueorfalse=True
     if not tab:  # Vérifie si la liste est vide
         trueorfalse=False
@@ -52,6 +92,18 @@ assert not tous_zeros([1, 2, 3])   # que des non-zéros == False
 #%% Numération binaire
 
 def binaire_vers_decimale(tab):
+    """
+    Renvoie l'entier naturel
+    dont le tableau de bits est tab
+
+    Parameters:
+    -----------
+        tab : tableau de bits (0 ou 1)
+
+    Returns:
+    -------
+        decimale : int
+    """
     puissance = 0
     decimale = 0
     reversedtab = inversion_tableau(tab)  # On inverse le tableau pour traiter du bit de poids faible au bit de poids fort
@@ -71,6 +123,21 @@ assert binaire_vers_decimale([1, 0, 0]) == 4
 assert binaire_vers_decimale([1, 0, 1]) == 5
 
 def decimale_vers_binaire(n):
+    """
+    Renvoie le tableau de bits
+    de la représentation binaire de n
+    Bits de poids forts à gauche
+
+    Parameters:
+    -----------
+        n: int
+            un entier >=0 en base 10
+            précondition n >= 0
+
+    Returns:
+    --------
+        tableau d'entiers
+    """
     assert n >= 0  # Précondition
     binaire = [None] * 32  # on réserve 32 bits
     postab = 0  # Position dans le tableau
@@ -97,19 +164,19 @@ assert decimale_vers_binaire(5) == [1, 0, 1]
 
 def xor(bit1, bit2):
     """
-    Renvoie le bit obtenu par 
+    Renvoie le bit obtenu par
     OU EXCLUSIF de bit1 et bit2
 
     Parameters:
     -----------
-        bit1 : int 
+        bit1 : int
             un bit 0 ou 1
         bit2 : int
             un bit 0 ou 1
 
     Returns:
     --------
-        int : 
+        int :
             un bit 0 ou 1
     """
     #précondition
@@ -134,7 +201,7 @@ def bourrage_zero_gauche(tab, n):
             tableau de bits
             précondition : len(tab) <= n
         n : int
-            un entier naturel 
+            un entier naturel
             précondition : n >= 0
     Returns:
         un tableau d'entiers de type list
@@ -196,12 +263,21 @@ assert  xor_tab([1, 1], [1, 1, 1]) == [1, 0, 0]
 
 #%% Stratégie gagnante
 
-import random
-
 
 def affichage_tas(tas, caractere):
     """
-    Affiche chaque tas avec un caractère pour représenter chaque objet.
+    Affiche dans l'ordre les objets restants dans les différents
+    tas contenus avec un caractere pou un objet
+    Utilise la fonction affichage
+
+    Paramètre:
+    ---------
+    tas : tableau  d'entiers
+        tab[k] est le nombre d'objets dans le tas d'index k
+
+    Valeur renvoyée :
+    ----------------
+    None
     """
     for k in range(len(tas)):
         saut_de_ligne(1)
@@ -213,8 +289,19 @@ def affichage_tas(tas, caractere):
 
 def somme_nim(tas):
     """
-    Renvoie la somme de Nim sous forme de tableau de bits.
-    Calcule le XOR binaire de tous les tas.
+    Renvoie un tableau de bits (0 ou 1), représentant
+    la somme de nim des représentations binaires
+    des nombres d'objets de chaque tas
+    Utilise les fonctions xor_tab et decimale_vers_binaire
+
+    Paramètre:
+    ---------
+    tas : tableau  d'entiers
+        tab[k] est le nombre d'objets dans le tas d'index k
+
+    Valeur renvoyée :
+    ----------------
+    tableau de bits 0 ou 1 de type list
     """
     s = [0]  # somme initiale = 0
 
@@ -242,10 +329,20 @@ assert somme_nim([28, 59, 25, 3]) == [1, 1, 1, 1, 0, 1]
 assert somme_nim([1, 3, 4]) == [1, 1, 0]
 
 
+
+import random
+
+
 def choix_joueur_somme_nim(tas):
-    """
-    Demande à l'utilisateur de choisir un tas et combien retirer.
-    Vérifie la validité des choix.
+    """[summary]
+
+    Parameters:
+    -----------
+        tas ([type]): [description]
+
+    Returns:
+    --------
+        [type]: [description]
     """
     saut_de_ligne(1)
     separateur('-')
@@ -261,10 +358,15 @@ def choix_joueur_somme_nim(tas):
 
 
 def choix_ordinateur_somme_nim(tas):
-    """
-    L'ordinateur choisit le bon tas et le bon nombre d'objets à enlever
-    pour mettre la somme de Nim à 0 (stratégie gagnante).
-    Si la somme est déjà nulle, il joue aléatoirement.
+    """[summary]
+
+    Parameters:
+    -----------
+        tas ([type]): [description]
+
+    Returns:
+    --------
+        [type]: [description]
     """
     snim = somme_nim(tas)
 
@@ -291,9 +393,22 @@ def choix_ordinateur_somme_nim(tas):
 
 def partie_somme_nim(tas):
     """
-    Simule une partie de Nim classique entre un humain et l'ordinateur.
-    L'ordinateur applique la stratégie de Nim-sum.
-    Affiche les actions et le gagnant.
+    Simule une partie de jeu de Nim classique entre un humain et
+    l'ordinateur, ce dernier applique la stratégie gagnante décrite
+    dans l'énoncé.
+    Affiche l'évolution des tas, les actions réalisées par chaque joueur
+    et le gagnant !
+
+    Parameters:
+    -----------
+        tas : list
+            tableau d'entiers
+            tas[k] est le nombre d'objets dans le tas d'index k
+            avec 0 <= k < len(tas)
+
+    Returns:
+    --------
+        None
     """
     ordinateur = random.randint(1, 2)
     print("L'ordinateur est le joueur numéro", ordinateur)
@@ -336,7 +451,7 @@ def partie_somme_nim(tas):
 # --------------------------------------------------------------
 
 """
-Exemple d'exécution : partie_somme_nim([1, 3, 7])
+partie_somme_nim([1, 3, 7])
 
 L'ordinateur est le joueur numéro 2
 ########################################
