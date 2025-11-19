@@ -1,1 +1,12 @@
-Réponses au question
+ 1)
+La stratégie gagnante est lorsque le joueur 2 finit son tour sur un nombre d’allumettes multiple de 4 et qu’il fait en sorte que cela continu, il va enlever les dernières allumettes et par conséquent gagner la partie.
+ 
+Si le joueur 2 joue mal, le joueur 1 doit pouvoir donner un chiffre entre 1 et 3 afin de pouvoir finir son tour sur un multiple de 4 et gagner la partie en continuant de cette manière.
+1)
+ 
+ 1) L’appel qui permet d’afficher l’image si dessous est affichage_tas([12,5], "*")
+ 
+ 
+La boucle cherche le premier tas où l’ordinateur peut appliquer la stratégie gagnante :
+faire en sorte que la somme de Nim devienne nulle après son coup.
+Si aucun tas ne permet cela (position perdante), la fonction passe à un choix aléatoire.
