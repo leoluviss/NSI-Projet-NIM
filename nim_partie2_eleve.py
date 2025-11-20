@@ -148,7 +148,7 @@ def decimale_vers_binaire(n):
         n = n // 2
         postab += 1
     binaire = binaire[:postab]  # On ne garde que la partie utile
-    return inversion_tableau(binaire)
+    return inversion_tableau(binaire) # On inverse les bits pour les remettre dans le bon sens avec la fonction inversion_tableau()
 
 
 #tests unitaires
@@ -334,16 +334,24 @@ import random
 
 
 def choix_joueur_somme_nim(tas):
-    """[summary]
-
-    Parameters:
-    -----------
-        tas ([type]): [description]
-
-    Returns:
-    --------
-        [type]: [description]
     """
+    Permet au joueur de choisir un tas et le nombre d'objets à retirer.
+
+    Parameters
+    ----------
+    tas : list[int]
+        Liste des tailles des tas dans le jeu de Nim.
+
+    Returns
+    -------
+    tuple[int, int]
+        Un tuple contenant :
+        - choix_tas : int
+            L'indice du tas choisi par le joueur.
+        - choix_objet : int
+            Le nombre d'objets à retirer du tas choisi.
+    """
+
     saut_de_ligne(1)
     separateur('-')
     choix_tas = int(input("Choix du tas ? "))
@@ -358,15 +366,24 @@ def choix_joueur_somme_nim(tas):
 
 
 def choix_ordinateur_somme_nim(tas):
-    """[summary]
+    """
+    Détermine le coup de l'ordinateur en fonction de la stratégie optimale du jeu de Nim.
+    Si la position est gagnante (somme Nim non nulle), l'ordinateur applique la stratégie
+    pour forcer une position perdante pour l'adversaire. Sinon, il choisit un coup aléatoire.
 
-    Parameters:
-    -----------
-        tas ([type]): [description]
+    Parameters
+    ----------
+    tas : list[int]
+        Liste des tailles des tas dans le jeu de Nim.
 
-    Returns:
-    --------
-        [type]: [description]
+    Returns
+    -------
+    tuple[int, int]
+        Un tuple contenant :
+        - choix_tas : int
+            L'indice du tas choisi par l'ordinateur.
+        - choix_objet : int
+            Le nombre d'objets à retirer du tas choisi.
     """
     snim = somme_nim(tas)
 
@@ -415,60 +432,142 @@ def partie_somme_nim(tas):
     separateur('#')
     affichage_tas(tas, '*')
 
-    joueur = 1  # joueur humain = 1
+    joueur = 1
 
     while not tous_zeros(tas):
-        print("\n----------------------------------------")
-        print("Au tour du joueur", joueur)
         affichage_tas(tas, '*')
 
         if joueur == ordinateur:
-            print("L'ordinateur réfléchit…")
+            print("\n----------------------------------------")
+            print("Au tour du joueur", joueur)
             choix_tas, choix_objet = choix_ordinateur_somme_nim(tas)
-            print("→ L'ordinateur retire", choix_objet, "objet(s) du tas", choix_tas)
+            print("L'ordinateur retire", choix_objet, "objet(s) du tas", choix_tas)
         else:
+            print("\n----------------------------------------")
+            print("Au tour du joueur", joueur)
             choix_tas, choix_objet = choix_joueur_somme_nim(tas)
-            print("→ Vous retirez", choix_objet, "objet(s) du tas", choix_tas)
+            print("Vous retirez", choix_objet, "objet(s) du tas", choix_tas)
 
-        # Mise à jour du tas choisi
-        tas[choix_tas] -= choix_objet
+        tas[choix_tas] -= choix_objet   # Mise à jour du tas choisi
 
         # Condition de victoire
         if tous_zeros(tas):
-            print("\n=== FIN DE PARTIE ===")
+            print("\nFIN DE PARTIE")
             if joueur == ordinateur:
                 print("L'ordinateur a gagné !")
             else:
                 print("Vous avez gagné !")
             return
 
-        # Joueur suivant
-        joueur = 1 if joueur == 2 else 2
-
-
-# --------------------------------------------------------------
-# Exemple d'exécution
-# --------------------------------------------------------------
-
+        joueur = prochain_joueur(joueur)    # Joueur suivant
 """
-partie_somme_nim([1, 3, 7])
-
 L'ordinateur est le joueur numéro 2
 ########################################
-
 Tas numéro 0
 1 objets restants :
 *
-
 Tas numéro 1
 3 objets restants :
 * * *
-
 Tas numéro 2
 7 objets restants :
 * * * * * * *
 
 ----------------------------------------
 Au tour du joueur 1
-...
+Choix du tas ? 2
+Nombre d'objets à retirer ? 3
+Vous retirez 3 objet(s) du tas 2
+
+Tas numéro 0
+1 objets restants :
+*
+Tas numéro 1
+3 objets restants :
+* * *
+Tas numéro 2
+4 objets restants :
+* * * *
+
+----------------------------------------
+Au tour du joueur 2
+L'ordinateur retire 1 objet(s) du tas 1
+
+Tas numéro 0
+1 objets restants :
+*
+Tas numéro 1
+2 objets restants :
+* *
+Tas numéro 2
+4 objets restants :
+* * * *
+
+----------------------------------------
+Au tour du joueur 1
+Choix du tas ? 2
+Nombre d'objets à retirer ? 2
+Vous retirez 2 objet(s) du tas 2
+
+Tas numéro 0
+1 objets restants :
+*
+Tas numéro 1
+2 objets restants :
+* *
+Tas numéro 2
+2 objets restants :
+* *
+
+----------------------------------------
+Au tour du joueur 2
+L'ordinateur retire 1 objet(s) du tas 0
+
+Tas numéro 0
+0 objets restants :
+
+Tas numéro 1
+2 objets restants :
+* *
+Tas numéro 2
+2 objets restants :
+* *
+
+----------------------------------------
+Au tour du joueur 1
+Choix du tas ? 1
+Nombre d'objets à retirer ? 1
+Vous retirez 1 objet(s) du tas 1
+
+Tas numéro 0
+0 objets restants :
+
+Tas numéro 1
+1 objets restants :
+*
+Tas numéro 2
+2 objets restants :
+* *
+
+----------------------------------------
+Au tour du joueur 2
+L'ordinateur retire 2 objet(s) du tas 2
+
+Tas numéro 0
+0 objets restants :
+
+Tas numéro 1
+1 objets restants :
+*
+Tas numéro 2
+0 objets restants :
+
+----------------------------------------
+Au tour du joueur 1
+Choix du tas ? 1
+Nombre d'objets à retirer ? 1
+Vous retirez 1 objet(s) du tas 1
+
+FIN DE PARTIE
+Vous avez gagné !
 """

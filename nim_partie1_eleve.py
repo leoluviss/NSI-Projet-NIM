@@ -138,7 +138,7 @@ assert prochain_joueur(2) == 1
 
 #%%
 
-def partie_fort_boyard1():
+def partie_fort_boyard1(joueur):
     """
     Simule une partie du jeu des allumettes
     de Fort Boyard entre deux joueurs humains
@@ -158,7 +158,6 @@ def partie_fort_boyard1():
     None
     """
     nb_objet = 20
-    joueur = 1
     affichage(nb_objet, '*')
     while nb_objet > 0:
         n = choix_joueur()
@@ -168,7 +167,7 @@ def partie_fort_boyard1():
         joueur = prochain_joueur(joueur)
     print("Joueur", prochain_joueur(joueur), "gagnant !")
     return
-
+partie_fort_boyard1(1)
 """
 Exemple de déroulement de partie :
 
@@ -322,7 +321,7 @@ assert choix_ordinateur(9) ==1
 def partie_fort_boyard2():
     """
     Simule une partie du jeu des allumettes
-    de Fort Boyard entre deux joueurs humains
+    de Fort Boyard entre un humains et un ordinateur
     20 allumettes au départ 
     A chaque tour, un joueur prend entre 1 et 3 allumettes
     Celui qui ne peut plus jouer a perdu    
@@ -331,12 +330,11 @@ def partie_fort_boyard2():
     
     Paramètre:
     ---------
-    joueur : int
-        le numéro du joueur courant
+    aucun
         
     Valeur renvoyée :
     ----------------    
-    int 
+    None
     """
     nb_allumette = 20
     ordinateur = randint(1, 2)  # Choix aléatoire du joueur qui commence
